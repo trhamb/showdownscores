@@ -1,0 +1,120 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+
+@font-face {
+    font-family: "Digital";
+    src: url("../fonts/digital-7.woff2") format("woff2");
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /* border: 1px solid black; */
+}
+body {
+    background-color: white;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 20px;
+    font-family: "Montserrat", sans-serif;
+}
+
+main {
+    display: flex;
+    align-items: center;
+}
+
+.score-left,
+.score-right {
+    width: 40%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.score-center {
+    width: 20%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.content-wrapper {
+    width: 50%;
+}
+
+.content-wrapper button {
+    width: 100%;
+    margin: 10px 0 0 0;
+    padding: 30px;
+    font-size: 2em;
+    font-family: "Montserrat", sans-serif;
+    font-weight: bold;
+}
+
+.p1,
+.p2 {
+    font-family: "Montserrat", sans-serif;
+    font-size: 2em;
+    text-align: center;
+    margin: 20px 0 10px 0;
+}
+
+button {
+    box-shadow: 4px 4px #2b2b2b;
+}
+
+#goal-button,
+#foul-button {
+    border-radius: 5px;
+}
+
+#clear,
+#reset {
+    background-color: rgb(122, 122, 122);
+    border: none;
+    border-radius: 5px;
+    color: white;
+}
+
+#goal-button {
+    background-color: green;
+    border: none;
+    color: white;
+}
+
+#foul-button {
+    background-color: red;
+    border: none;
+    color: white;
+}
+
+.serving {
+    background-color: orange;
+    padding: 10px;
+    font-size: 1.75em;
+    font-family: "Montserrat", sans-serif;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 5px;
+    box-shadow: 4px 4px #2b2b2b;
+    margin-top: 10px;
+}
+
+.scoreboard {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding: 20px;
+    border: 15px solid rgb(37, 37, 37);
+    border-radius: 10px;
+    background-color: black;
+    color: white;
+    font-family: "Digital", sans-serif;
+    font-size: 16em;
+    box-shadow: 4px 4px #000;
+}
