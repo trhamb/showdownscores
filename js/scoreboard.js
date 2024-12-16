@@ -14,6 +14,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const left_scoreboard = document.querySelector(".score-left .scoreboard");
   const right_scoreboard = document.querySelector(".score-right .scoreboard");
 
+  let speechQueue = [];
+  let isSpeaking = false;
+
   // Get required elements
   const score_display_p1 = document.querySelector(
     ".score-left .content-wrapper .scoreboard p"
@@ -110,14 +113,30 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // Speech and Queueing
   function speak(text) {
-    if (responsiveVoice.voiceSupport()) {
-      responsiveVoice.speak(text, "UK English Male", {
-        pitch: 1,
-        rate: 1,
-        volume: 1,
-      });
+    speechQueue.push(text);
+
+    if (!isSpeaking) {
+      processSpeechQueue();
     }
+  }
+
+  function processSpeechQueue() {
+    if (speechQueue.length === 0) {
+      isSpeaking = false;
+      return;
+    }
+
+    isSpeaking = true;
+    const textToSpeak = speechQueue.shift();
+
+    responsiveVoice.speak(textToSpeak, "UK English Male", {
+      pitch: 1,
+      rate: 1,
+      volume: 1,
+      onend: processSpeechQueue,
+    });
   }
 
   function updateHistory(customMessage = null) {
