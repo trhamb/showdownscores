@@ -1,65 +1,76 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <title>Showdown Scores</title>
-        <meta name="description" content="" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="stylesheet" href="/css/styles.css" />
-    </head>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Showdown Scores</title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
 
-    <body>
-        <div class="app">
-            <header>
-                <div class="header-left">
-                    <h1>Showdown Scores</h1>
-                </div>
-                <div class="header-right">
-                    <p>something</p>
-                </div>
-            </header>
-
-            <main>
-                <div class="score-left">
-                    <div class="content-wrapper">
-                        <div class="scoreboard">
-                            <p>0</p>
-                        </div>
-                        <div class="set-display">
-                            <p>Sets:&nbsp;</p>
-                            <p id="p1-sets">0</p>
-                        </div>
-                        <h2 class="p1">Player One</h2>
-                        <button id="goal-button">Goal</button>
-                        <button id="foul-button">Foul</button>
-                    </div>
-                </div>
-                <div class="score-center">
-                    <div class="content-wrapper">
-                        <h2 class="history-header">History</h2>
-                        <div id="game-history" class="history"></div>
-                        <button id="undo">Undo Last Action</button>
-                        <button id="reset">Reset</button>
-                    </div>
-                </div>
-                <div class="score-right">
-                    <div class="content-wrapper">
-                        <div class="scoreboard">
-                            <p>0</p>
-                        </div>
-                        <div class="set-display">
-                            <p>Sets:&nbsp;</p>
-                            <p id="p2-sets">0</p>
-                        </div>
-                        <h2 class="p2">Player Two</h2>
-                        <button id="goal-button">Goal</button>
-                        <button id="foul-button">Foul</button>
-                    </div>
-                </div>
-            </main>
+  <body>
+    <div id="player-setup" class="setup-overlay">
+      <div class="setup-content">
+        <h2>Game Setup</h2>
+        <p>
+          A coin toss will be run automatically to decide the starting server.
+        </p>
+        <div class="player-inputs">
+          <div class="input-group">
+            <label for="p1-name">Player 1 Name:</label>
+            <input type="text" id="p1-name" />
+          </div>
+          <div class="input-group">
+            <label for="p2-name">Player 2 Name:</label>
+            <input type="text" id="p2-name" />
+          </div>
         </div>
+        <button id="start-game">Start Game</button>
+      </div>
+    </div>
 
-        <script src="js/scoreboard.js"></script>
-    </body>
+    <div class="app">
+      <main>
+        <div class="score-left">
+          <div class="content-wrapper">
+            <div class="scoreboard">
+              <p>0</p>
+            </div>
+            <div class="set-display">
+              <p>Sets:&nbsp;</p>
+              <p id="p1-sets">0</p>
+            </div>
+            <h2 class="p1">Player One</h2>
+            <button id="goal-button">Goal</button>
+            <button id="foul-button">Foul</button>
+          </div>
+        </div>
+        <div class="score-center">
+          <div class="content-wrapper">
+            <h2 class="history-header">History</h2>
+            <div id="game-history" class="history"></div>
+            <button id="undo">Undo Last Action</button>
+            <button id="reset">Reset Game</button>
+          </div>
+        </div>
+        <div class="score-right">
+          <div class="content-wrapper">
+            <div class="scoreboard">
+              <p>0</p>
+            </div>
+            <div class="set-display">
+              <p>Sets:&nbsp;</p>
+              <p id="p2-sets">0</p>
+            </div>
+            <h2 class="p2">Player Two</h2>
+            <button id="goal-button">Goal</button>
+            <button id="foul-button">Foul</button>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script src="js/scoreboard.js"></script>
+  </body>
 </html>
