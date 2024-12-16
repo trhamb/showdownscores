@@ -137,23 +137,27 @@ document.addEventListener("DOMContentLoaded", () => {
   function checkSetWinner() {
     if (p1_score >= 11 && p1_score - p2_score >= 2) {
       speak(`Set to ${p1_name}`);
+      speak(`New set`);
       updateHistory(`${p1_name} wins the set`);
       p1_sets += 1;
       set_display_p1.textContent = p1_sets;
-      // Force serve switch regardless of current serve stage
-      currentServer = 2; // Next set starts with player 2
+      currentServer = 2;
       actionsInCurrentServe = 0;
       resetScores();
+      // Announce next server based on currentServer value
+      speak(`${currentServer === 1 ? p1_name : p2_name} to serve`);
       return true;
     } else if (p2_score >= 11 && p2_score - p1_score >= 2) {
       speak(`Set to ${p2_name}`);
+      speak(`New set`);
       updateHistory(`${p2_name} wins the set`);
       p2_sets += 1;
       set_display_p2.textContent = p2_sets;
-      // Force serve switch regardless of current serve stage
-      currentServer = 1; // Next set starts with player 1
+      currentServer = 1;
       actionsInCurrentServe = 0;
       resetScores();
+      // Announce next server based on currentServer value
+      speak(`${currentServer === 1 ? p1_name : p2_name} to serve`);
       return true;
     }
     return false;
