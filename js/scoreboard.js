@@ -111,14 +111,12 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function speak(text) {
-    if ("speechSynthesis" in window) {
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.land = "en-GB";
-      utterance.rate = 1;
-      utterance.pitch = 1;
-      window.speechSynthesis.speak(utterance);
-    } else {
-      console.log("Speech synthesis not supported in this browser.");
+    if (responsiveVoice.voiceSupport()) {
+      responsiveVoice.speak(text, "UK English Male", {
+        pitch: 1,
+        rate: 1,
+        volume: 1,
+      });
     }
   }
 
