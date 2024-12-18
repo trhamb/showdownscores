@@ -22,6 +22,10 @@ body {
     align-items: center;
 }
 
+.orientation-warning {
+    display: none;
+}
+
 /* Start Game */
 .setup-overlay {
     position: fixed;
@@ -256,4 +260,84 @@ button {
     text-align: center;
     font-family: "Montserrat", sans-serif;
     font-size: 2em;
+}
+
+@media (orientation: portrait) and (max-width: 1024px) {
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f0f0f0;
+    }
+
+    .orientation-warning {
+        display: block; /* Show a warning */
+        text-align: center;
+        font-size: 3rem;
+        color: #333;
+        padding: 10px;
+        font-family: "Montserrat", sans-serif;
+    }
+
+    .orientation-warning img {
+        margin-top: 20px;
+        width: 30%;
+    }
+
+    .app,
+    .setup-overlay {
+        display: none; /* Hide the app content */
+    }
+}
+
+@media (orientation: landscape) and (max-width: 1024px) {
+    .orientation-warning {
+        display: none; /* Hide the warning */
+    }
+
+    .app {
+        height: 100svh;
+    }
+
+    .score-left,
+    .score-right {
+        width: 40%;
+    }
+
+    .scoreboard {
+        font-size: 4em;
+        padding: 10px;
+    }
+
+    .setup-overlay {
+        background-color: white;
+    }
+
+    .set-display {
+        padding: 10px;
+        font-size: 1.5em;
+    }
+
+    .content-wrapper button {
+        font-size: 1.5em;
+        padding: 10px;
+        margin: 8px 0 0 0;
+    }
+
+    .history {
+        height: 30svh;
+    }
+
+    #undo,
+    #reset {
+        font-size: 1.5em;
+        margin-top: 10px;
+    }
+
+    .p1,
+    .p2 {
+        font-size: 1.5em;
+        margin: 5px 0 0 0;
+    }
 }
