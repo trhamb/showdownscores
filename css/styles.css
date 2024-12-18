@@ -202,6 +202,11 @@ button {
     margin-bottom: 10px;
 }
 
+.scoreboard p {
+    border: 1px solid green;
+    height: fit-content;
+}
+
 .set-display {
     display: flex;
     justify-content: center;
