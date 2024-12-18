@@ -262,6 +262,25 @@ button {
     font-size: 2em;
 }
 
+/* History Scroll Bar */
+.history::-webkit-scrollbar {
+    width: 10px;
+}
+
+.history::-webkit-scrollbar-track {
+    background: #2b2b2b;
+    border-radius: 5px;
+}
+
+.history::-webkit-scrollbar-thumb {
+    background: #4caf50;
+    border-radius: 5px;
+}
+
+.history::-webkit-scrollbar-thumb:hover {
+    background: #45a049;
+}
+
 @media (orientation: portrait) and (max-width: 1024px) {
     body {
         display: flex;
