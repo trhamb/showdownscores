@@ -111,6 +111,7 @@ header {
 main {
     display: flex;
     align-items: center;
+    width: 100%;
 }
 
 .score-left,
@@ -212,6 +213,12 @@ button {
 .scoreboard p {
     border: 1px solid green;
     height: fit-content;
+    padding: 0;
+    margin: 0;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .set-display {
