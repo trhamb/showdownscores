@@ -17,6 +17,8 @@ document.addEventListener("DOMContentLoaded", () => {
     let speechQueue = [];
     let isSpeaking = false;
 
+    let gameStarted = false;
+
     // Get required elements
     const score_display_p1 = document.querySelector(
         ".score-left .content-wrapper .scoreboard p"
@@ -38,7 +40,34 @@ document.addEventListener("DOMContentLoaded", () => {
     const p1NameInput = document.querySelector("#p1-name");
     const p2NameInput = document.querySelector("#p2-name");
 
+    // Add keyboard controls
+    document.addEventListener("keydown", (event) => {
+        if (!gameStarted) return;
+
+        switch (event.key.toLowerCase()) {
+            case "q":
+                goal_button_p1.click();
+                break;
+            case "a":
+                foul_button_p1.click();
+                break;
+            case "w":
+                undo_button.click();
+                break;
+            case "s":
+                reset_button.click();
+                break;
+            case "e":
+                goal_button_p2.click();
+                break;
+            case "d":
+                foul_button_p2.click();
+                break;
+        }
+    });
+
     function startGame() {
+        gameStarted = true;
         // Get player names from inputs
         p1_name = p1NameInput.value.trim() || "Player 1";
         p2_name = p2NameInput.value.trim() || "Player 2";
