@@ -5,7 +5,8 @@ document.addEventListener("DOMContentLoaded", () => {
     p2_sets = 0;
     p1_name = "";
     p2_name = "";
-    let lastAction = null;
+    let actionHistory = [];
+    const MAX_HISTORY = 5;
     let currentServer = 1;
     let actionsInCurrentServe = 0;
     const p1ServingIndicator = document.querySelector(".p1-serving");
@@ -99,39 +100,38 @@ document.addEventListener("DOMContentLoaded", () => {
         );
     }
 
+    function recordAction(type, player) {
+        const action = {
+            type: type,
+            player: player,
+            serveCount: actionsInCurrentServe,
+            server: currentServer,
+            p1Score: p1_score,
+            p2Score: p2_score,
+        };
+
+        actionHistory.push(action);
+        if (actionHistory.length > MAX_HISTORY) {
+            actionHistory.shift();
+        }
+    }
+
     function undoLastAction() {
         try {
+            const lastAction = actionHistory.pop();
             if (!lastAction) return;
 
-            if (lastAction.type === "goal") {
-                if (lastAction.player === 1) {
-                    p1_score -= 2;
-                    score_display_p1.textContent = p1_score;
-                    speak(`Undoing last goal for ${p1_name}`);
-                } else {
-                    p2_score -= 2;
-                    score_display_p2.textContent = p2_score;
-                    speak(`Undoing last goal for ${p2_name}`);
-                }
-            } else if (lastAction.type === "foul") {
-                if (lastAction.player === 1) {
-                    p2_score -= 1;
-                    score_display_p2.textContent = p2_score;
-                    speak(`Undoing last foul for ${p1_name}`);
-                } else {
-                    p1_score -= 1;
-                    score_display_p1.textContent = p1_score;
-                    speak(`Undoing last foul for ${p2_name}`);
-                }
-            }
+            // Restore previous scores
+            p1_score = lastAction.p1Score;
+            p2_score = lastAction.p2Score;
+            score_display_p1.textContent = p1_score;
+            score_display_p2.textContent = p2_score;
 
-            if (history.lastChild) {
-                history.removeChild(history.lastChild);
-            }
-
+            // Restore serve state
             actionsInCurrentServe = lastAction.serveCount;
             currentServer = lastAction.server;
 
+            // Update visual indicators
             const activeBorderColor =
                 actionsInCurrentServe === 0 ? "green" : "orange";
             left_scoreboard.style.borderColor =
@@ -139,7 +139,17 @@ document.addEventListener("DOMContentLoaded", () => {
             right_scoreboard.style.borderColor =
                 currentServer === 2 ? activeBorderColor : "rgb(37, 37, 37)";
 
-            lastAction = null;
+            // Remove last history entry
+            if (history.lastChild) {
+                history.removeChild(history.lastChild);
+            }
+
+            // Announce undo
+            speak(
+                `Undoing last ${lastAction.type} for ${
+                    lastAction.player === 1 ? p1_name : p2_name
+                }`
+            );
         } catch (e) {
             console.error(e);
         }
@@ -147,6 +157,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Speech and Queueing
     function speak(text) {
+        if (!responsiveVoice) {
+            console.error(
+                "RespionsiveVoice not loaded. Text-to-speech may be unavailable."
+            );
+            return;
+        }
+
         speechQueue.push(text);
 
         if (!isSpeaking) {
@@ -163,12 +180,23 @@ document.addEventListener("DOMContentLoaded", () => {
         isSpeaking = true;
         const textToSpeak = speechQueue.shift();
 
-        responsiveVoice.speak(textToSpeak, "UK English Male", {
-            pitch: 1,
-            rate: 1,
-            volume: 1,
-            onend: processSpeechQueue,
-        });
+        try {
+            responsiveVoice.speak(textToSpeak, "UK English Male", {
+                pitch: 1,
+                rate: 1,
+                volume: 1,
+                onend: processSpeechQueue,
+                onerror: (e) => {
+                    console.error("Speech error:", e);
+                    isSpeaking = false;
+                    processSpeechQueue(); // Continue with next item
+                },
+            });
+        } catch (e) {
+            console.error("Speech processing error:", e);
+            isSpeaking = false;
+            processSpeechQueue();
+        }
     }
 
     function updateHistory(customMessage = null) {
@@ -270,12 +298,7 @@ document.addEventListener("DOMContentLoaded", () => {
         speak(
             `${p1_name} Goal. ${p1_name}: ${p1_score}, ${p2_name}: ${p2_score}`
         );
-        lastAction = {
-            type: "goal",
-            player: 1,
-            serveCount: actionsInCurrentServe,
-            server: currentServer,
-        };
+        recordAction("goal", 1);
         updateHistory();
         const setWon = checkSetWinner();
         if (!setWon) {
@@ -289,13 +312,7 @@ document.addEventListener("DOMContentLoaded", () => {
         speak(
             `${p1_name} Foul. ${p2_name} Score: ${p2_score}, ${p1_name} score: ${p1_score}`
         );
-        lastAction = {
-            type: "foul",
-            player: 1,
-            serveCount: actionsInCurrentServe,
-            server: currentServer,
-        };
-        updateHistory(`${p1_name} Foul`);
+        recordAction("foul", 1);
         updateHistory();
         const setWon = checkSetWinner();
         if (!setWon) {
@@ -309,12 +326,7 @@ document.addEventListener("DOMContentLoaded", () => {
         speak(
             `${p2_name} Goal. ${p2_name}: ${p2_score}, ${p1_name}: ${p1_score}`
         );
-        lastAction = {
-            type: "goal",
-            player: 2,
-            serveCount: actionsInCurrentServe,
-            server: currentServer,
-        };
+        recordAction("goal", 2);
         updateHistory();
         const setWon = checkSetWinner();
         if (!setWon) {
@@ -328,13 +340,7 @@ document.addEventListener("DOMContentLoaded", () => {
         speak(
             `${p2_name} Foul. ${p1_name} Score: ${p1_score}, ${p2_name} score: ${p2_score}`
         );
-        lastAction = {
-            type: "foul",
-            player: 2,
-            serveCount: actionsInCurrentServe,
-            server: currentServer,
-        };
-        updateHistory(`${p2_name} Foul`);
+        recordAction("foul", 2);
         updateHistory();
         const setWon = checkSetWinner();
         if (!setWon) {
@@ -346,6 +352,7 @@ document.addEventListener("DOMContentLoaded", () => {
     right_scoreboard.style.borderColor = "rgb(37, 37, 37)";
 
     startGameButton.addEventListener("click", () => {
+        console.log("Start button clicked");
         startGame();
     });
 
